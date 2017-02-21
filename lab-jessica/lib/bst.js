@@ -20,19 +20,17 @@ Tree.prototype.insert = function(val) {
     if( val < node.val ) {
       if(!node.left) {
         node.left = newNode;
-        console.log('nodesies LEFT', node.left);
         return node.left.val;
       }
-      _insert(node.left, val);
+      return _insert(node.left, val);
     }
 
     if( node.val <= val) {
       if(!node.right) {
         node.right = newNode;
-        console.log('nodesies LEFT', node.right);
         return node.right.val;
       }
-      _insert(node.right, val);
+      return _insert(node.right, val);
     }
   }
 };
