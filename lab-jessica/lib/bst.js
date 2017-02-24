@@ -36,80 +36,116 @@ Tree.prototype.insert = function(val) {
 };
 
 Tree.prototype.remove = function(val) {
-  if(!this.root) return false;
+  if(!this.root) return console.log('NO TREE EXISTS');
 
-  if(this.root.val === val) {
+  let prevNode = null;
+  let match;
+  let prevReplacement;
+  let replacement = null;
 
-    if(this.root.right) {
-      let prev = this.root;
-      let curr = this.root.right;
+  _findMatch(this.root);
 
-      while(curr.left) {
-        prev = curr;
-        curr = curr.left;
-      }
-      this.root.val = curr.val;
+  if(!match) return console.log('NO MATCH FOUND');
 
-      if(!curr.right) {
-        if(prev.left === curr) {
-          prev.left = null;
-          return;
-        }
-        prev.right = null;
-        return;
+  _findReplacement(match);
+  console.log('prevNode', prevNode);
+  console.log('match', match);
+  console.log('prevReplacement', prevReplacement);
+  console.log('replacemnt', replacement);
 
-      } else if(curr.right) {
-        if(prev.left === curr) {
-          prev.left = curr.right;
-          return;
-        }
-        prev.right = curr.right;
-        return;
-      }
-    } else if(this.root.left) {
-      let prev = this.root;
-      let curr = this.root.left;
+  _deleteMatch();
 
-      while(curr.right) {
-        prev = curr;
-        curr = curr.right;
-      }
-      this.root.val = curr.val;
+  function _findMatch(node) {
+    if(!node) return;
 
-      if(!curr.left) {
-        if(prev.right === curr) {
-          prev.right = null;
-          return;
-        }
-        prev.left = null;
-        return;
-      } else if(curr.left) {
-        if(prev.right === curr) {
-          prev.right = curr.left;
-          return;
-        }
-        prev.left = curr.left;
-        return;
-      }
+    if(node.val === val) {
+      return match = node;
     }
-
-    this.root = null;
+    if(node.val <= val) {
+      prevNode = node;
+      _findMatch(node.right);
+    }
+    if(node.val > val) {
+      prevNode = node;
+      _findMatch(node.left);
+    }
   }
 
+  function _findReplacement(node) {
+
+    if(node.right) {
+      let curr = node.right;
+      prevReplacement = node;
+
+      while(curr.left) {
+        prevReplacement = curr;
+        curr = curr.left;
+      }
+
+      replacement = curr;
+
+    } else if(node.left) {
+      let curr = node.left;
+      prevReplacement = node;
+
+      while(curr.right) {
+        prevReplacement = curr;
+        curr = curr.right;
+      }
+
+      replacement = curr;
+    }
+  }
+
+  function _deleteMatch() {
+
+    if(!prevReplacement && !prevNode) {
+      console.log('MUST DELETE ROOT');
+      match = null;
+      return;
+    } else {
+      console.log('ARE WE IN EHRE?');
+      match.val = replacement.val;
+    }
+    if(prevReplacement === match) {
+      console.log('PREVREPLACEMENT EQUALS MATCH');
+      match.right = replacement.right;
+      return;
+    }
+    if(replacement.right) {
+      console.log('REPLACEMENT HAS A RIGHT');
+      prevReplacement.left = replacement.right;
+      return;
+    }
+
+    if(replacement.left) {
+      console.log('REPLACEMENT HAS A LEFT');
+      prevReplacement.right = replacement.left;
+      return;
+    }
+
+    if(!replacement.right && !replacement.left) {
+      console.log('replacement HAS NO LEFT AND NO RIGHT');
+      prevReplacement.left = null;
+      return;
+    }
+
+
+  }
 };
 
 let bst = new Tree();
 bst.insert(9);
-bst.insert(5);
-// bst.insert(12);
-bst.insert(2);
-bst.insert(8);
-bst.insert(6);
+// bst.insert(5);
+bst.insert(12);
+// bst.insert(2);
+// bst.insert(8);
+// bst.insert(6);
 // bst.insert(10);
 // bst.insert(16);
 // bst.insert(11);
 // bst.insert(7);
-bst.remove(9);
+bst.remove(12);
 console.log('FULL TREE', bst);
 console.log('right', bst.root.right);
 console.log('left', bst.root.left);
