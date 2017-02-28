@@ -47,19 +47,103 @@ Tree.prototype.remove = function(val) {
 
   if(!match) return console.log('NO MATCH FOUND');
 
+  // BELOW ARE THE CASES FOR THE REMOVED NODE NOT HAVING ANY CHILDREN
+
+  // if match is root and has no children
+  if(!match.right && !match.left && match === this.root) {
+    console.log('TREE ONLY HAS ONE NODE');
+    this.root = null;
+    return;
+  }
+
+  // if match has no children and is right child of parent
+  if(!match.right && !match.left && prevNode.right === match) {
+    console.log('MATCH HAS NO CHILDREN and is RIGHT CHILD OF PARENT');
+    prevNode.right = match.right;
+  }
+
+  // if match has no children and is left child of parent
+  if(!match.right && !match.left && prevNode.left === match) {
+    console.log('MATCH HAS NO CHILDREN and is LEFT CHILD OF PARENT');
+    prevNode.left = match.right;
+  }
+
+  // BELOW ARE THE CASES FOR THE REMOVED NODE HAVING 1 CHILD
+
+  // if match is root and only has right child
+  if(match.right && !match.left && this.root === match) {
+    console.log('match is root and only has right child');
+    this.root = match.right;
+    return;
+  }
+
+  if(match.left && !match.right && this.root === match) {
+    console.log('match is root and only has left child');
+    this.root = match.left;
+    return;
+  }
+
+  if(match.right && !match.left && prevNode.right === match) {
+    console.log('match has one right child and is right child of parent');
+    prevNode.right = match.right;
+  }
+
+  if(match.right && !match.left && prevNode.left === match) {
+    console.log('match has one right child and is left child of parent');
+    prevNode.left = match.right;
+  }
+
+  if(!match.right && match.left && prevNode.left === match) {
+    console.log('match has one left child and is left child of parent');
+    prevNode.left = match.left;
+  }
+
+  if(!match.right && match.left && prevNode.right === match) {
+    console.log('match has one left child and is right child of parent');
+    prevNode.right = match.left;
+  }
+
   _findReplacement(match);
+
+  // BELOW ARE THE CASES FOR THE REMOVED NODE HAVING NO CHILDREN
+  if(!replacement.left && !replacement.right && prevReplacement.left === replacement) {
+    console.log('REPLACEMENT HAS NO CHILDREN AND IS A LEFT CHILD');
+    match.val = replacement.val;
+    prevReplacement.left = null;
+  }
+
+  if(!replacement.left && !replacement.right && prevReplacement.right === replacement) {
+    console.log('REPLACEMENT HAS NO CHILDREN AND IS A LEFT CHILD');
+    match.val = replacement.val;
+    prevReplacement.right = null;
+  }
+
+  // BELOW ARE CASES FOR REMOVED NODE HAVING ONE CHILD
+  if(replacement.right && prevReplacement.right === replacement) {
+    console.log('REPLACEMENT HAS RIGHT CHILD AND IS A RIGHT CHILD');
+    match.val = replacement.val;
+    prevReplacement.right = replacement.right;
+  }
+
+  if(replacement.right && prevReplacement.left === replacement) {
+    console.log('REPLACEMENT HAS RIGHT CHILD AND IS A LEFT CHILD');
+    match.val = replacement.val;
+    prevReplacement.left = replacement.right;
+  }
+
+
   console.log('prevNode', prevNode);
-  console.log('match', match);
+  console.log('matchyyyy', match);
   console.log('prevReplacement', prevReplacement);
   console.log('replacemnt', replacement);
-
-  _deleteMatch();
 
   function _findMatch(node) {
     if(!node) return;
 
     if(node.val === val) {
-      return match = node;
+      match = node;
+      console.log('IS THIS REAL', match);
+      return;
     }
     if(node.val <= val) {
       prevNode = node;
@@ -72,80 +156,30 @@ Tree.prototype.remove = function(val) {
   }
 
   function _findReplacement(node) {
+    let curr = node.right;
+    prevReplacement = node;
 
-    if(node.right) {
-      let curr = node.right;
-      prevReplacement = node;
-
-      while(curr.left) {
-        prevReplacement = curr;
-        curr = curr.left;
-      }
-
-      replacement = curr;
-
-    } else if(node.left) {
-      let curr = node.left;
-      prevReplacement = node;
-
-      while(curr.right) {
-        prevReplacement = curr;
-        curr = curr.right;
-      }
-
-      replacement = curr;
+    while(curr.left) {
+      prevReplacement = curr;
+      curr = curr.left;
     }
+
+    replacement = curr;
   }
 
-  function _deleteMatch() {
-
-    if(!prevReplacement && !prevNode) {
-      console.log('MUST DELETE ROOT');
-      match = null;
-      return;
-    } else {
-      console.log('ARE WE IN EHRE?');
-      match.val = replacement.val;
-    }
-    if(prevReplacement === match) {
-      console.log('PREVREPLACEMENT EQUALS MATCH');
-      match.right = replacement.right;
-      return;
-    }
-    if(replacement.right) {
-      console.log('REPLACEMENT HAS A RIGHT');
-      prevReplacement.left = replacement.right;
-      return;
-    }
-
-    if(replacement.left) {
-      console.log('REPLACEMENT HAS A LEFT');
-      prevReplacement.right = replacement.left;
-      return;
-    }
-
-    if(!replacement.right && !replacement.left) {
-      console.log('replacement HAS NO LEFT AND NO RIGHT');
-      prevReplacement.left = null;
-      return;
-    }
-
-
-  }
 };
 
 let bst = new Tree();
-bst.insert(9);
-// bst.insert(5);
-bst.insert(12);
-// bst.insert(2);
-// bst.insert(8);
-// bst.insert(6);
-// bst.insert(10);
-// bst.insert(16);
-// bst.insert(11);
-// bst.insert(7);
-bst.remove(12);
+bst.insert(5);
+bst.insert(2);
+bst.insert(10);
+// bst.insert(9);
+// bst.insert(15);
+// bst.insert(13);
+// bst.insert(14);
+// bst.insert(9);
+
+bst.remove(5);
 console.log('FULL TREE', bst);
-console.log('right', bst.root.right);
-console.log('left', bst.root.left);
+// console.log('right', bst.root.right);
+// console.log('left', bst.root.left);
