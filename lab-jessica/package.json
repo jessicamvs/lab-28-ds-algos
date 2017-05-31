@@ -1,0 +1,32 @@
+{
+  "name": "lab-28-ds-algos",
+  "version": "1.0.0",
+  "description": "Binary Search Tree",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessicamvs/lab-28-ds-algos.git"
+  },
+  "keywords": [
+    "algorithms",
+    "data",
+    "structures",
+    "binary search tree"
+  ],
+  "author": "Jessica Vasquez-Soltero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jessicamvs/lab-28-ds-algos/issues"
+  },
+  "homepage": "https://github.com/jessicamvs/lab-28-ds-algos#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^4.0.1",
+    "mocha": "^3.2.0"
+  }
+}
